@@ -1,4 +1,4 @@
-export default function Home() {
+export default function IndexPage() {
 	return (
 		<div>
 			<h1>Hello from the index page</h1>
