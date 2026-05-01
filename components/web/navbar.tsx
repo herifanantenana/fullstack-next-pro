@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
 
 const LINKS = [
@@ -15,32 +15,27 @@ export function Navbar() {
 				<Link href="/" className="text-3xl font-bold">
 					Next<span className="text-blue-500">Pro</span>
 				</Link>
+
 				<ul className="flex gap-x-2 border">
 					{LINKS.map(({ href, label }) => (
 						<li key={href}>
-							<Link
-								href={href}
-								className={buttonVariants({ variant: "ghost" })}
-							>
-								{label}
-							</Link>
+							<Button variant="ghost" asChild>
+								<Link href={href}>{label}</Link>
+							</Button>
 						</li>
 					))}
 				</ul>
 			</nav>
+
 			<div className="flex items-center gap-x-2 border">
-				<Link
-					href="/auth/sign-up"
-					className={buttonVariants({ variant: "default" })}
-				>
-					Sign up
-				</Link>
-				<Link
-					href="/auth/login"
-					className={buttonVariants({ variant: "secondary" })}
-				>
-					Login
-				</Link>
+				<Button variant="default" asChild>
+					<Link href="/auth/sign-up">Sign up</Link>
+				</Button>
+
+				<Button variant="secondary" asChild>
+					<Link href="/auth/login">Login</Link>
+				</Button>
+
 				<ThemeToggle />
 			</div>
 		</header>
