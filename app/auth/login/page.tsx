@@ -1,6 +1,6 @@
 "use client";
 
-import { signUpSchema } from "@/app/_schemas/auth";
+import { loginSchema } from "@/app/_schemas/auth";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -25,31 +25,30 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-export default function SignUpPage() {
+export default function LoginPage() {
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
 
 	const form = useForm({
-		resolver: zodResolver(signUpSchema),
+		resolver: zodResolver(loginSchema),
 		defaultValues: {
-			name: "",
 			email: "",
 			password: "",
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof signUpSchema>) {
+	function onSubmit(data: z.infer<typeof loginSchema>) {
 		startTransition(async () => {
-			await authClient.signUp.email({
-				name: data.name,
+			await authClient.signIn.email({
 				email: data.email,
 				password: data.password,
 				fetchOptions: {
 					onSuccess: () => {
-						toast.success("Account created successfully");
+						toast.success("Logged in successfully");
 						router.replace("/");
 					},
 					onError: (error) => {
+						console.log("error", error);
 						toast.error(error.error.message);
 					},
 				},
@@ -60,32 +59,15 @@ export default function SignUpPage() {
 	return (
 		<Card className="gap-y-8">
 			<CardHeader>
-				<CardTitle>Sign up</CardTitle>
-				<CardDescription>Create an account to get started.</CardDescription>
+				<CardTitle>Sign in</CardTitle>
+				<CardDescription>
+					Enter your credentials to access your account.
+				</CardDescription>
 			</CardHeader>
 
 			<CardContent>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<FieldGroup className="gapy-4">
-						<Controller
-							control={form.control}
-							name="name"
-							render={({ field, fieldState }) => (
-								<Field>
-									<FieldLabel htmlFor="form-rhf-name">Full Name</FieldLabel>
-									<Input
-										{...field}
-										id="form-rhf-name"
-										placeholder="John Doe"
-										aria-invalid={fieldState.invalid}
-									/>
-									{fieldState.invalid && fieldState.error && (
-										<FieldError errors={[fieldState.error]} />
-									)}
-								</Field>
-							)}
-						/>
-
 						<Controller
 							control={form.control}
 							name="email"
@@ -129,11 +111,11 @@ export default function SignUpPage() {
 						<Button disabled={isPending} type="submit">
 							{isPending ? (
 								<>
-									<LoaderIcon size="20" className="animate-spin" />
-									<span>Creating account...</span>
+									<LoaderIcon width="20" height="20" className="animate-spin" />
+									<span>Logging in...</span>
 								</>
 							) : (
-								"Create an account"
+								"Login"
 							)}
 						</Button>
 					</FieldGroup>

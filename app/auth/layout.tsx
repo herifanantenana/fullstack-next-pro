@@ -11,7 +11,7 @@ export default function AuthLayout({
 		<main className="border-foreground/30 flex min-h-screen items-center justify-center border">
 			<Button className="absolute top-5 left-5" variant="secondary" asChild>
 				<Link href="/">
-					<ArrowLeftIcon width={24} height={24} />
+					<ArrowLeftIcon size="24" />
 					<span>Go back</span>
 				</Link>
 			</Button>

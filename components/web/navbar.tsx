@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { AuthButton } from "./auth-button";
 import { ThemeToggle } from "./theme-toggle";
 
 const LINKS = [
@@ -28,14 +29,7 @@ export function Navbar() {
 			</nav>
 
 			<div className="flex items-center gap-x-2 border">
-				<Button variant="default" asChild>
-					<Link href="/auth/sign-up">Sign up</Link>
-				</Button>
-
-				<Button variant="secondary" asChild>
-					<Link href="/auth/login">Login</Link>
-				</Button>
-
+				<AuthButton />
 				<ThemeToggle />
 			</div>
 		</header>
