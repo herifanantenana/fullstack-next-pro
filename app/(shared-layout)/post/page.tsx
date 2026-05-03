@@ -44,6 +44,8 @@ async function PostList() {
 							src="https://images.unsplash.com/photo-1768839726129-8dcb29a4e7b8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 							alt="Nextjs 16"
 							fill
+							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+							loading="eager"
 							className="rounded-lg object-cover"
 						/>
 					</CardHeader>
