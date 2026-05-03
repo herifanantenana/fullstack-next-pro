@@ -67,7 +67,7 @@ export default function LoginPage() {
 
 			<CardContent>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<FieldGroup className="gapy-4">
+					<FieldGroup className="gap-y-4">
 						<Controller
 							control={form.control}
 							name="email"

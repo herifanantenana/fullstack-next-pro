@@ -1,6 +1,6 @@
 "use client";
 
-import { signUpSchema } from "@/app/_schemas/auth";
+import { postSchema } from "@/app/_schemas/blog";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -16,8 +16,10 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
+import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -25,43 +27,33 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-export default function SignUpPage() {
+export function CreatePostForm() {
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
+	const mutation = useMutation(api.posts.createPost);
 
 	const form = useForm({
-		resolver: zodResolver(signUpSchema),
+		resolver: zodResolver(postSchema),
 		defaultValues: {
-			name: "",
-			email: "",
-			password: "",
+			title: "",
+			content: "",
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof signUpSchema>) {
+	function onSubmit(data: z.infer<typeof postSchema>) {
 		startTransition(async () => {
-			await authClient.signUp.email({
-				name: data.name,
-				email: data.email,
-				password: data.password,
-				fetchOptions: {
-					onSuccess: () => {
-						toast.success("Account created successfully");
-						router.replace("/");
-					},
-					onError: (error) => {
-						toast.error(error.error.message);
-					},
-				},
-			});
+			const post = await mutation({ title: data.title, body: data.content });
+			console.log("post", post);
+			toast.success("Post created successfully");
+			router.push("/");
 		});
 	}
 
 	return (
 		<Card className="gap-y-8">
 			<CardHeader>
-				<CardTitle>Sign up</CardTitle>
-				<CardDescription>Create an account to get started.</CardDescription>
+				<CardTitle>Create blog article</CardTitle>
+				<CardDescription>Create a new blog for your readers</CardDescription>
 			</CardHeader>
 
 			<CardContent>
@@ -69,14 +61,15 @@ export default function SignUpPage() {
 					<FieldGroup className="gap-y-4">
 						<Controller
 							control={form.control}
-							name="name"
+							name="title"
 							render={({ field, fieldState }) => (
 								<Field>
-									<FieldLabel htmlFor="form-rhf-name">Full Name</FieldLabel>
+									<FieldLabel htmlFor="form-rhf-title">Title</FieldLabel>
 									<Input
 										{...field}
-										id="form-rhf-name"
-										placeholder="John Doe"
+										id="form-rhf-title"
+										type="text"
+										placeholder="Super cool title"
 										aria-invalid={fieldState.invalid}
 									/>
 									{fieldState.invalid && fieldState.error && (
@@ -88,36 +81,17 @@ export default function SignUpPage() {
 
 						<Controller
 							control={form.control}
-							name="email"
+							name="content"
 							render={({ field, fieldState }) => (
 								<Field>
-									<FieldLabel htmlFor="form-rhf-email">Email</FieldLabel>
-									<Input
+									<FieldLabel htmlFor="form-rhf-content">Content</FieldLabel>
+									<Textarea
 										{...field}
-										id="form-rhf-email"
-										type="email"
-										placeholder="john.doe@example.com"
+										id="form-rhf-content"
+										placeholder="Super cool blog content"
 										aria-invalid={fieldState.invalid}
-									/>
-									{fieldState.invalid && fieldState.error && (
-										<FieldError errors={[fieldState.error]} />
-									)}
-								</Field>
-							)}
-						/>
-
-						<Controller
-							control={form.control}
-							name="password"
-							render={({ field, fieldState }) => (
-								<Field>
-									<FieldLabel htmlFor="form-rhf-password">Password</FieldLabel>
-									<Input
-										{...field}
-										id="form-rhf-password"
-										type="password"
-										placeholder="••••••••"
-										aria-invalid={fieldState.invalid}
+										rows={3}
+										className="resize-y"
 									/>
 									{fieldState.invalid && fieldState.error && (
 										<FieldError errors={[fieldState.error]} />
@@ -130,10 +104,10 @@ export default function SignUpPage() {
 							{isPending ? (
 								<>
 									<LoaderIcon size="20" className="animate-spin" />
-									<span>Creating account...</span>
+									<span>Creating post...</span>
 								</>
 							) : (
-								"Create an account"
+								"Create post"
 							)}
 						</Button>
 					</FieldGroup>

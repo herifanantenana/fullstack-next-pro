@@ -1,14 +1,14 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 import { LoaderIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
 
-export const AuthButton = () => {
+export function AuthButton() {
 	const router = useRouter();
 
 	return (
@@ -49,4 +49,4 @@ export const AuthButton = () => {
 			</AuthLoading>
 		</>
 	);
-};
+}
