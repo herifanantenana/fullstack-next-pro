@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { authComponent } from "./auth";
 
 // Create a new post with the given title and body
@@ -18,5 +18,14 @@ export const createPost = mutation({
 		});
 
 		return newPostId;
+	},
+});
+
+// Get all posts, sorted by creation time
+export const getPosts = query({
+	args: {},
+	handler: async (ctx) => {
+		const posts = await ctx.db.query("posts").order("desc").collect();
+		return posts;
 	},
 });

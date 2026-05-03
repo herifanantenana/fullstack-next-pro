@@ -6,7 +6,7 @@ export default function SharedLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<main className="border-foreground/30 border">
+		<main>
 			<Navbar />
 			{children}
 		</main>

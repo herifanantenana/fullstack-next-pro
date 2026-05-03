@@ -1,5 +1,6 @@
 "use client";
 
+import { createPost } from "@/app/_actions/post-action";
 import { postSchema } from "@/app/_schemas/blog";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +18,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "convex/react";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -30,20 +29,18 @@ import z from "zod";
 export function CreatePostForm() {
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
-	const mutation = useMutation(api.posts.createPost);
 
 	const form = useForm({
 		resolver: zodResolver(postSchema),
 		defaultValues: {
 			title: "",
-			content: "",
+			body: "",
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof postSchema>) {
+	function onSubmit(values: z.infer<typeof postSchema>) {
 		startTransition(async () => {
-			const post = await mutation({ title: data.title, body: data.content });
-			console.log("post", post);
+			await createPost(values);
 			toast.success("Post created successfully");
 			router.push("/");
 		});
@@ -81,14 +78,14 @@ export function CreatePostForm() {
 
 						<Controller
 							control={form.control}
-							name="content"
+							name="body"
 							render={({ field, fieldState }) => (
 								<Field>
-									<FieldLabel htmlFor="form-rhf-content">Content</FieldLabel>
+									<FieldLabel htmlFor="form-rhf-body">Body</FieldLabel>
 									<Textarea
 										{...field}
-										id="form-rhf-content"
-										placeholder="Super cool blog content"
+										id="form-rhf-body"
+										placeholder="Super cool post body"
 										aria-invalid={fieldState.invalid}
 										rows={3}
 										className="resize-y"

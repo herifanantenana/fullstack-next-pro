@@ -3,7 +3,7 @@ import { CreatePostForm } from "@/components/web/create-post-form";
 export default function CreatePage() {
 	return (
 		<div className="space-y-12 py-12">
-			<div className="border text-center">
+			<div className="text-center">
 				<h1 className="text-4xl font-bold tracking-tight md:text-6xl">
 					Create a Post
 				</h1>
