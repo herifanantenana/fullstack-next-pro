@@ -8,12 +8,20 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
 export const dynamic = "force-static";
 export const revalidate = 30;
+
+export const metadata: Metadata = {
+	title: "Our Post - Next.js 16 Convex Starter",
+	description: "Latest insights and updates from our team",
+	category: "web development",
+	authors: [{ name: "Arakotom" }],
+};
 
 export default function PostPage() {
 	return (

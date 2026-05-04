@@ -5,6 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeftIcon } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,6 +13,23 @@ interface PostIdPageProps {
 	params: Promise<{ postId: Id<"posts"> }>;
 }
 
+export async function generateMetadata({
+	params,
+}: PostIdPageProps): Promise<Metadata> {
+	const { postId } = await params;
+	const post = await fetchQuery(api.posts.getPostById, { postId });
+
+	if (!post) {
+		return {
+			title: "Post not found - Next.js 16 Convex Starter",
+		};
+	}
+
+	return {
+		title: `${post.title} - Next.js 16 Convex Starter`,
+		description: post.body,
+	};
+}
 export default async function PostIdPage({ params }: PostIdPageProps) {
 	const { postId } = await params;
 	const [post, preloadedComments] = await Promise.all([
