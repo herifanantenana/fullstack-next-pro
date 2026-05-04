@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
 				port: "",
 				pathname: "/**",
 			},
+			{
+				protocol: "https",
+				hostname: "savory-giraffe-922.eu-west-1.convex.cloud",
+				port: "",
+				pathname: "/**",
+			},
 		],
 	},
 };

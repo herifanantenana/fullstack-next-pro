@@ -12,6 +12,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
+export const dynamic = "force-static";
+export const revalidate = 30;
+
 export default function PostPage() {
 	return (
 		<div className="space-y-12 py-12">
@@ -41,7 +44,10 @@ async function PostList() {
 				<Card key={post._id} className="pt-0">
 					<CardHeader className="relative h-48 overflow-hidden rounded-none">
 						<Image
-							src="https://images.unsplash.com/photo-1768839726129-8dcb29a4e7b8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							src={
+								post.imageUrl ??
+								"https://images.unsplash.com/photo-1768839726129-8dcb29a4e7b8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							}
 							alt="Nextjs 16"
 							fill
 							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -8,7 +8,7 @@ export default function AuthLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<main className="border-foreground/30 flex min-h-screen items-center justify-center border">
+		<main className="flex min-h-screen items-center justify-center">
 			<Button className="absolute top-5 left-5" variant="secondary" asChild>
 				<Link href="/">
 					<ArrowLeftIcon size="24" />

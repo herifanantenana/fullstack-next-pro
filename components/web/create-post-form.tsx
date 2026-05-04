@@ -35,6 +35,7 @@ export function CreatePostForm() {
 		defaultValues: {
 			title: "",
 			body: "",
+			image: undefined,
 		},
 	});
 
@@ -89,6 +90,29 @@ export function CreatePostForm() {
 										aria-invalid={fieldState.invalid}
 										rows={3}
 										className="resize-y"
+									/>
+									{fieldState.invalid && fieldState.error && (
+										<FieldError errors={[fieldState.error]} />
+									)}
+								</Field>
+							)}
+						/>
+
+						<Controller
+							control={form.control}
+							name="image"
+							render={({ field, fieldState }) => (
+								<Field>
+									<FieldLabel htmlFor="form-rhf-image">Image</FieldLabel>
+									<Input
+										id="form-rhf-image"
+										type="file"
+										accept="image/*"
+										onChange={(event) => {
+											const file = event.target.files?.[0];
+											field.onChange(file);
+										}}
+										aria-invalid={fieldState.invalid}
 									/>
 									{fieldState.invalid && fieldState.error && (
 										<FieldError errors={[fieldState.error]} />
