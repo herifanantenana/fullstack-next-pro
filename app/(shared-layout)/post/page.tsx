@@ -35,14 +35,13 @@ export default function PostPage() {
 }
 
 async function PostList() {
-	await new Promise((resolve) => setTimeout(resolve, 1000));
 	const post = await fetchQuery(api.posts.getPosts);
 
 	return (
 		<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 			{post?.map((post) => (
 				<Card key={post._id} className="pt-0">
-					<CardHeader className="relative h-48 overflow-hidden rounded-none">
+					<CardHeader className="relative h-48 overflow-hidden">
 						<Image
 							src={
 								post.imageUrl ??

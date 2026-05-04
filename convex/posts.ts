@@ -46,6 +46,7 @@ export const getPosts = query({
 	},
 });
 
+// Generate a URL that can be used to upload an image to storage
 export const generateImageUploadUrl = mutation({
 	args: {},
 	handler: async (ctx) => {
@@ -55,5 +56,29 @@ export const generateImageUploadUrl = mutation({
 		}
 
 		return await ctx.storage.generateUploadUrl();
+	},
+});
+
+// Get a single post by its ID
+export const getPostById = query({
+	args: {
+		postId: v.id("posts"),
+	},
+	handler: async (ctx, args) => {
+		const post = await ctx.db.get("posts", args.postId);
+
+		if (!post) {
+			return null;
+		}
+
+		const resolvedImageUrl =
+			post?.imageStorageId !== undefined
+				? await ctx.storage.getUrl(post.imageStorageId)
+				: undefined;
+
+		return {
+			...post,
+			imageUrl: resolvedImageUrl,
+		};
 	},
 });
